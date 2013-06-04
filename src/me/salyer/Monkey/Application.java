@@ -26,13 +26,22 @@ public class Application {
 			}
 			
 			//and exit with the length
-			return args.length;
+			return exit(args.length);
 		}
 		
 		//magical application stuff happens here
 		
-		return 0;
+		
+		//if all went well then return 0;
+		return exit(0);
 	
+	}
+	
+	public static int exit(int i)
+	{
+		//add any exit reporting here
+		
+		return i;
 	}
 
 }
