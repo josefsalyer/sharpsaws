@@ -7,41 +7,42 @@ package me.salyer.Monkey;
  * @author jsalyer
  *
  */
+import java.io.*;
 public class Application {
 
-	/**
-	 * @param args
-	 */
-	public static int main(String[] args) {
-		
-		
-		//handle args just in case
-		if(args.length > 0)
-		{
-			// for now if we have args, we'll print them out
-		
-			for(String arg : args)
-			{
-				System.out.println(arg);
-			}
+    public static int answer() 
+    {
+        return 42;
+    }
+
+    public static Boolean process(String fileName)
+    {
+    	FileInputStream fStream;
+    	DataInputStream dStream;
+    	BufferedReader 	reader = null;
+    	
+		try {
+			fStream = new FileInputStream(fileName);
+			dStream = new DataInputStream(fStream);
+	    	reader  = new BufferedReader(new InputStreamReader(dStream));
+	    	
+	    	//do some awesome stuff here
+	    	
+	    	reader.close();
+		} catch (Exception e) {
 			
-			//and exit with the length
-			return exit(args.length);
+			return false;
+			
 		}
-		
-		//magical application stuff happens here
-		
-		
-		//if all went well then return 0;
-		return exit(0);
-	
-	}
-	
-	public static int exit(int i)
-	{
-		//add any exit reporting here
-		
-		return i;
+    	
+
+        return (reader != null);
+    	
+    }
+    
+    public static void main(String[] args) 
+    {
+    
 	}
 
 }
