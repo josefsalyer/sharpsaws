@@ -75,11 +75,31 @@ public class Account
 	{
         for (int i = 0; i < ACCT_WIDTH; i++)
         {
-            this.digits.add(Digit.getDigit(stringForIndex(i)));
+
+            Digit d = Digit.getDigit(stringForIndex(i));
+            this.digits.add(d);
         }
         
-        this.accountNumber = (Account.checksum(digits)) ? this.join(digits)
-                : this.join(digits) + Account.DELIMITER + Account.ILL;
+        if ( Account.checksum(digits) )
+        {
+            this.accountNumber = this.join(digits);
+        }
+        else
+        {
+            String s = this.join(digits) + Account.DELIMITER;
+            int u = s.indexOf(Digit.UNK);
+            if ( u == -1 )
+            {
+                s += Account.ERR;
+            }
+            else
+            {
+                s += Account.ILL;
+            }
+
+            this.accountNumber = s;
+
+        }
 
     }
 

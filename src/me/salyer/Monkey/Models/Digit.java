@@ -1,7 +1,7 @@
 package me.salyer.Monkey.Models;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public enum Digit 
 {
@@ -35,19 +35,45 @@ public enum Digit
 			 "|_|"),
 	NINE  	(" _ "+
 			 "|_|"+
-			 " _|")
+			 " _|"),
+ UNKNOWN("")
 ;
 
 
-	private String string;
+    public static final String        UNK = "?";
+    private String                    string;
 	
 	private static Map<String, Digit> stringToDigitMap;
 	
 	
-	private Digit(String aString) 
-	{
-		this.string = aString;
-	}
+    public static Digit getDigit(String s)
+    {
+        Digit d = null;
+
+        if ( stringToDigitMap == null )
+        {
+            initMapping();
+        }
+
+        if(stringToDigitMap.containsKey(s))
+        {
+            d = stringToDigitMap.get(s);
+        }
+        else
+        {
+            d = Digit.UNKNOWN;
+            d.string = s;
+        }
+        
+
+        return d;
+
+    }
+
+    private Digit(String aString)
+    {
+        this.string = aString;
+    }
 	
 	private static void initMapping() 
 	{
@@ -62,7 +88,7 @@ public enum Digit
 	
 	public int getNumber() 
 	{
-		return this.ordinal();
+        return (isUnknown()) ? -1 : this.ordinal();
 	}
 
 	public String getString() 
@@ -72,27 +98,15 @@ public enum Digit
 	
 	public String getNumberAsString()
 	{
-		return Integer.toString(this.getNumber());
+        return (isUnknown()) ? Digit.UNK : Integer.toString(this.getNumber());
 	}
 	
-	
-	public static Digit getDigit(String s) 
+    private Boolean isUnknown()
 	{
-		Digit d = null;
-
-		if (stringToDigitMap == null) 
-		{
-			initMapping();
-		}
-		
-		if(s instanceof String && s.length() == 9)
-		{
-			d = stringToDigitMap.get(s);
-		}
-
-		
-		return d;
-		
+        return (this.ordinal() + 1 == Digit.values().length);
 	}
+
 	
+	
+
 }

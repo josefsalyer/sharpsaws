@@ -20,9 +20,8 @@ public class AccountTest
         bottom = "  ||_  _|  | _||_|  ||_||_|";
 
         Account account = new Account(topham, middle, bottom);
-        String expected = "123456788    ILL";
+        String expected = "123456788    ERR";
         assertTrue(expected.equals(account.getAccountNumber()));
-
 
 	}
 
@@ -36,6 +35,21 @@ public class AccountTest
         bottom = " _|  | _||_||_||_ |_||_| _|";
 
         String expected = "345882865";
+
+        Account account = new Account(topham, middle, bottom);
+
+        assertTrue(expected.equals(account.getAccountNumber()));
+    }
+
+    @Test
+    public void testWeirdoAccount()
+    {
+
+        topham = " _ __  _  _     _  _  _  _ ";
+        middle = " _||_||_ |_||_| _||_||_ |_ ";
+        bottom = " _|  | _||_||_||_ |_||_| _|";
+
+        String expected = "3?58?2865    ILL";
 
         Account account = new Account(topham, middle, bottom);
 
