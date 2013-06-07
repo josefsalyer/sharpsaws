@@ -3,20 +3,38 @@ package me.salyer.Monkey;
  * Koala
  */
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import me.salyer.Monkey.Models.Report;
 /**
  * @author jsalyer
  *
  */
-import me.salyer.Monkey.Models.Report;
 public class Application {
     
     public static void main(String[] args) 
     {
         if ( args.length == 1 )
     	{
-            Report report = new Report(args[0]);
+            Report report = null;
+            try
+            {
+                report = new Report(args[0]);
+            }
+            catch (FileNotFoundException e)
+            {
+                Application.handleException(e);
+            }
+            catch (IOException e)
+            {
+                Application.handleException(e);
+            }
 
-            report.print();
+            if ( report != null )
+            {
+                report.print();
+            }
 
     	}
         else
@@ -26,6 +44,13 @@ public class Application {
         }
 
 	}
+
+    private static void handleException(Exception e)
+    {
+        System.out.print("An error occurred while running: "
+                + e.getLocalizedMessage());
+        e.printStackTrace();
+    }
 
     public Application(String fileName)
     {

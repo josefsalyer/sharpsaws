@@ -70,8 +70,22 @@ public class Account
         {
             this.digits.add(Digit.getDigit(stringForIndex(i)));
         }
-        this.accountNumber = this.join(digits);
+        
+        this.accountNumber = (Account.checksum(digits)) ? this.join(digits) : "INVALID";
+
     }
+
+    public static Boolean checksum(List<Digit> hopefulAccountNumber)
+    {
+        int sum = 0;
+        for (int i = 1; i <= ACCT_WIDTH; i++)
+        {
+            sum += (hopefulAccountNumber.get(ACCT_WIDTH - i).ordinal() * i);
+        }
+        return (sum % 11 == 0);
+    }
+
+
 
 
     private String stringForIndex(int i)

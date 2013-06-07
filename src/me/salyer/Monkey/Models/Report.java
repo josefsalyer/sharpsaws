@@ -3,6 +3,7 @@ package me.salyer.Monkey.Models;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Report
         return report;
     }
 
-    public Report(String fileName)
+    public Report(String fileName) throws IOException
     {
         this.report = "";
         open(fileName);
@@ -30,37 +31,27 @@ public class Report
         System.out.print(report);
     }
 
-    private void open(String fileName)
+    private void open(String fileName) throws IOException
     {
-        FileInputStream fStream;
-        DataInputStream dStream;
-        BufferedReader reader = null;
+        FileInputStream fStream = fileStream(fileName);
 
-        // this seems ugly to me
-        try
-        {
-            fStream = new FileInputStream(fileName);
-            dStream = new DataInputStream(fStream);
-            reader = new BufferedReader(new InputStreamReader(dStream));
+        DataInputStream dStream = new DataInputStream(fStream);
 
-            try
-            {
-                process(reader);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(dStream));
 
-            reader.close();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return;
-        }
+        process(reader);
+
+        reader.close();
 
     }
+
+    private FileInputStream fileStream(String fileName) throws FileNotFoundException
+    {
+        FileInputStream fStream = new FileInputStream(fileName);
+
+        return fStream;
+    }
+
 
     private void process(BufferedReader reader) throws IOException
     {

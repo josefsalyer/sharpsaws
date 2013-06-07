@@ -7,25 +7,38 @@ import org.junit.Test;
 
 public class AccountTest 
 {
-	public String top;
+    public String topham;
 	public String middle;
 	public String bottom;
 
 	
 	@Test
-    public void testAccount()
+    public void testInvalidAccount()
 	{
-        top    = "    _  _     _  _  _  _  _ ";
+        topham = "    _  _     _  _  _  _  _ ";
         middle = "  | _| _||_||_ |_   ||_||_|";
-        bottom = "  ||_  _|  | _||_|  ||_| _|";
+        bottom = "  ||_  _|  | _||_|  ||_||_|";
 
-		String expected = "123456789";
-
-        Account account = new Account(top, middle, bottom);
-
-        System.out.print(account.getAccountNumber());
+        Account account = new Account(topham, middle, bottom);
+        String expected = "INVALID";
         assertTrue(expected.equals(account.getAccountNumber()));
 
 	}
+
+    @Test
+    public void testValidAccount()
+    {
+        // known valid 345882865
+
+        topham = " _     _  _  _  _  _  _  _ ";
+        middle = " _||_||_ |_||_| _||_||_ |_ ";
+        bottom = " _|  | _||_||_||_ |_||_| _|";
+
+        String expected = "345882865";
+
+        Account account = new Account(topham, middle, bottom);
+
+        assertTrue(expected.equals(account.getAccountNumber()));
+    }
 
 }

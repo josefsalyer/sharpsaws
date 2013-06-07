@@ -1,6 +1,6 @@
 package test;
 
-
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import me.salyer.Monkey.Application;
 
@@ -21,13 +21,13 @@ public class ApplicationTest
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             actual = true;
         }
         
-        // FIXME: assertEquals(expected, actual);
+        assertEquals(expected, actual);
         assertNotNull(app);
     }
+
     
     
 }

@@ -3,6 +3,10 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import me.salyer.Monkey.Models.Report;
 
 import org.junit.Test;
@@ -10,12 +14,30 @@ import org.junit.Test;
 public class ReportTest
 {
     String goodData = "testdata.dat";
-    String badData  = "goodData.dat";
+    String badData  = "blerg.dat";
 
     @Test
     public void testReport()
     {
-        Report report = new Report(goodData);
+        Boolean expected = false;
+        Boolean actual = false;
+        Report report = null;
+
+        try
+        {
+            report = new Report(goodData);
+        }
+        catch (FileNotFoundException e)
+        {
+            actual = true;
+        }
+        catch (IOException e)
+        {
+
+            actual = true;
+        }
+
+        assertEquals(expected, actual);
         assertNotNull(report);
     }
 
@@ -23,18 +45,22 @@ public class ReportTest
     public void fileDoesNotOpen()
     {
 
-        Boolean expected = false;
+        Boolean expected = true;
         Boolean actual = false;
         Report report = null;
+
         try
         {
-            report = new Report(goodData);
+            report = new Report(badData);
             actual = true;
         }
-        catch (Exception e)
+        catch (FileNotFoundException e)
         {
-            actual = false;
-            // e.printStackTrace();
+            actual = true;
+        }
+        catch (IOException e)
+        {
+            actual = true;
         }
 
         assertEquals(expected, actual);
