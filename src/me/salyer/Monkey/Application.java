@@ -7,42 +7,30 @@ package me.salyer.Monkey;
  * @author jsalyer
  *
  */
-import java.io.*;
+import me.salyer.Monkey.Models.Report;
 public class Application {
-
-    public static int answer() 
-    {
-        return 42;
-    }
-
-    public static Boolean process(String fileName)
-    {
-    	FileInputStream fStream;
-    	DataInputStream dStream;
-    	BufferedReader 	reader = null;
-    	
-		try {
-			fStream = new FileInputStream(fileName);
-			dStream = new DataInputStream(fStream);
-	    	reader  = new BufferedReader(new InputStreamReader(dStream));
-	    	
-	    	//do some awesome stuff here
-	    	
-	    	reader.close();
-		} catch (Exception e) {
-			
-			return false;
-			
-		}
-    	
-
-        return (reader != null);
-    	
-    }
     
     public static void main(String[] args) 
     {
-    
+        if ( args.length == 1 )
+    	{
+            Report report = new Report(args[0]);
+
+            report.print();
+
+    	}
+        else
+        {
+            System.out
+                    .println("Usage: /path/to/java Application.java \"report.dat\" ");
+        }
+
 	}
+
+    public Application(String fileName)
+    {
+        Application.main(new String[] { fileName });
+
+    }
 
 }
