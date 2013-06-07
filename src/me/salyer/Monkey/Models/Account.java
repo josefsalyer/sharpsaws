@@ -8,7 +8,14 @@ import java.util.List;
 public class Account 
 {
 
-    private String              accountNumber = null;
+    public static final String ERR           = "ERR";
+    public static final String ILL           = "ILL";
+    public static final String DELIMITER     = "    "; // FIXME: I'd probably
+                                                       // want to use a comma or
+                                                       // \t in a real world
+                                                       // situation
+
+    private String             accountNumber = null;
 
     public String getAccountNumber()
     {
@@ -71,7 +78,8 @@ public class Account
             this.digits.add(Digit.getDigit(stringForIndex(i)));
         }
         
-        this.accountNumber = (Account.checksum(digits)) ? this.join(digits) : "INVALID";
+        this.accountNumber = (Account.checksum(digits)) ? this.join(digits)
+                : this.join(digits) + Account.DELIMITER + Account.ILL;
 
     }
 

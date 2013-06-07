@@ -20,8 +20,9 @@ public class AccountTest
         bottom = "  ||_  _|  | _||_|  ||_||_|";
 
         Account account = new Account(topham, middle, bottom);
-        String expected = "INVALID";
+        String expected = "123456788    ILL";
         assertTrue(expected.equals(account.getAccountNumber()));
+
 
 	}
 
