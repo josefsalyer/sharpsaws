@@ -57,4 +57,22 @@ public class ApplicationTest
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testApplicationCallWithNoBadName()
+    {
+        boolean expected = false;
+        boolean actual = false;
+
+        try
+        {
+            Application.main(new String[] { "blerg.dat" });
+        }
+        catch (Exception e)
+        {
+            actual = true;
+        }
+
+        assertEquals(expected, actual);
+    }
+
 }

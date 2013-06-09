@@ -12,18 +12,15 @@ import me.salyer.Monkey.Models.Digit;
 
 import org.junit.Test;
 
-/**
- * @author jsalyer
- *
- */
-public class DigitTest {
+
+public class DigitTest
+{
 
     @Test
     public void testForZero()
     {
         String str = " _ " + "| |" + "|_|";
 
-        // LEARN: Why JAVA primitive typing is vague
         int expectedInt = 0;
         Digit digit = Digit.getDigit(str);
 
@@ -241,7 +238,7 @@ public class DigitTest {
 
         assertNotNull(guesses);
         
-        int expected = 4;
+        int expected = 2;
         int actual = guesses.size();
 
         assertEquals(expected, actual);
@@ -257,7 +254,7 @@ public class DigitTest {
                      ;
         Digit digit = Digit.getDigit(amb);
 
-        int expected = 4;
+        int expected = 1;
         int actual = digit.guesses().size();
         
         assertEquals(expected, actual);
@@ -274,7 +271,7 @@ public class DigitTest {
 
         Digit digit = Digit.getDigit(amb);
 
-        int expected = 6;
+        int expected = 2;
         int actual = digit.guesses().size();
         
         assertEquals(expected, actual);

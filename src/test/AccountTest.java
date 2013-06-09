@@ -11,8 +11,8 @@ public class AccountTest
     public String topham;
 	public String middle;
 	public String bottom;
-
 	
+
     @Test
     public void testInvalidAccount()
     {
@@ -50,7 +50,7 @@ public class AccountTest
         middle = " _||_||_ |_||_| _||_||_ |_ ";
         bottom = " _|  | _||_||_||_ |_||_| _|";
 
-        String expected = "345882865";
+        String expected = "3?5882865    AMB";
 
         Account account = new Account(topham, middle, bottom);
 
@@ -58,24 +58,4 @@ public class AccountTest
 
     }
 
-    // @Test
-    // public void testForAmbTag()
-    // {
-    //
-    //
-    // }
-
-    // @Test
-    // public void testForBestGuess()
-    // {
-    // topham = "    _  _  _  _  _  _     _ ";
-    // middle = "|_||_|| || ||_   |  |  | _ ";
-    // bottom = "  | _||_||_||_|  |  |  | _|";
-    //
-    // Account account = new Account(topham, middle, bottom);
-    //
-    //
-    //
-    // }
-        
 }

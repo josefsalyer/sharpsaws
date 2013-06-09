@@ -7,10 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import me.salyer.Monkey.Models.Report;
-/**
- * @author jsalyer
- *
- */
+
 public class Application {
     
     public static void main(String[] args) 
@@ -39,23 +36,20 @@ public class Application {
     	}
         else
         {
-            System.out
-                    .println("Usage: /path/to/java Application.java \"report.dat\" ");
+            System.out.println("Usage: /path/to/java Application.java \"report.dat\" ");
         }
 
 	}
 
     public static void handleException(Exception e)
     {
-        System.out.print("An error occurred while running: "
-                + e.getLocalizedMessage());
+        System.out.print("An error occurred while running: " + e.getLocalizedMessage());
         e.printStackTrace();
     }
 
     public Application(String fileName)
     {
         Application.main(new String[] { fileName });
-
     }
 
 }

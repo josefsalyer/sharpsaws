@@ -25,7 +25,7 @@ enum AccountType
 
 enum MatchType
 {
-    NONE, ONE;
+    NONE, ONE, MANY;
 }
 
 
@@ -34,15 +34,15 @@ public class Account
     // constants
     public static final Integer CHAR_WIDTH    = 3;
     public static final Integer ACCT_WIDTH    = 9;
-    public static String        DELIMITER     = "    "; // FIXME: I'd probably
+    public static final String  DELIMITER     = "    "; // FIXME: I'd probably
                                                        // want to use a comma or
                                                        // \t in a real world
                                                        // situation
 
     // properties
-    public AccountType          accountType;
     public List<String>         lines;
     public List<Digit>          digits;
+    private AccountType         accountType;
     private String              accountNumber = null;
 
 
@@ -55,6 +55,7 @@ public class Account
     {
         this.accountNumber = accountNumber;
     }
+
 
     // constructor
     public Account(String top, String middle, String bottom)
@@ -122,18 +123,31 @@ public class Account
     private void evaluateDigitsForAmbiguousness(List<Digit> candidates)
     {
 
-        List<Digit> unknownDigits = new ArrayList<Digit>();
+        List<Digit> unknownDigits = null;
         List<List<Digit>> ambiguousDigits = new ArrayList<List<Digit>>(); // there can be
 
 
-        // get a subset of digits that are ambiguous
+        // get a subset of digits that are ambiguous or unknown
         for (Digit digit : candidates)
         {
+            // grab unknown characters
             if ( digit == Digit.UNKNOWN )
             {
+                if ( unknownDigits == null )
+                {
+                    unknownDigits = new ArrayList<Digit>();
+                }
+
                 unknownDigits.add(digit);
             }
             
+            // only add them if there are any
+            if ( unknownDigits != null )
+            {
+                ambiguousDigits.add(unknownDigits);
+            }
+
+            // grab ambiguous characters
             List<Digit> guesses = digit.guesses();
             
             if ( guesses.size() > 0 )
@@ -148,47 +162,61 @@ public class Account
             
         }
 
-        if ( unknownDigits.size() > 0 )
-        {
-            evaluateUnknownDigitsAndCandidates(unknownDigits, candidates);
-        }
+        List<Digit> finalMatch = null;
 
-        if ( ambiguousDigits.size() > 0)
-        {
-            evaluateAmbiguousDigitsAndCandidates(ambiguousDigits, candidates);
-        }
+        List<List<Digit>> totalMatches = evaluateAmbiguousDigitsAndCandidates(ambiguousDigits, candidates);
 
+        MatchType matchType;
+        // fix for multiple matches types
+        if ( totalMatches.size() > 1 )
+        {
+            matchType = MatchType.MANY;
+        }
+        else
+        {
+            matchType = MatchType.values()[totalMatches.size()];
+
+        }
         
+        this.accountType = determineAccountType(matchType);
+
+        if ( matchType == MatchType.ONE )
+        {
+            finalMatch = totalMatches.get(0);
+        }
+        else
+        {
+            finalMatch = candidates;
+        }
+        finalizeAccountNumber(finalMatch);
     }
 
-    private void evaluateAmbiguousDigitsAndCandidates( List<List<Digit>> ambiguousDigits, List<Digit> candidates)
+    private List<List<Digit>> evaluateAmbiguousDigitsAndCandidates(List<List<Digit>> ambiguousDigits, List<Digit> candidates)
     {
+        List<List<Digit>> finalMatch = new ArrayList<List<Digit>>();
         for (List<Digit> list : ambiguousDigits)
         {
-            evaluateUnknownDigitsAndCandidates(list, candidates);
+            List<List<Digit>> temp = evaluateUnknownDigitsAndCandidates(list, candidates);
+            if ( temp != null )
+            {
+                finalMatch.addAll(temp);
+            }
+
         }
         
+        return finalMatch;
     }
 
-    private void evaluateUnknownDigitsAndCandidates(List<Digit> unknownDigits, List<Digit> candidates)
+    public List<List<Digit>> evaluateUnknownDigitsAndCandidates(List<Digit> unknownDigits, List<Digit> candidates)
     {
-        // TODO: refactor into its own thing -- actually, we can probably handle
-        // this through a recursive solution
-        // if ( unknownDigits.size() == 1 )
-            
+
+        List<List<Digit>> matches = new ArrayList<List<Digit>>();
+
         for (int h = 0, u = unknownDigits.size(); h < u; h++)
         {
             List<Digit> guesses = unknownDigits.get(h).guesses();
 
-            // if there are no guesses end early
-            // if ( guesses.isEmpty() )
-            // {
-            // this.accountType = AccountType.ILL;
-            // finalizeAccountNumber(candidates);
-            // }
-
             int index = candidates.indexOf(Digit.UNKNOWN);
-            List<List<Digit>> matches = new ArrayList<List<Digit>>();
 
             for (int i = 0, n = guesses.size(); i < n; i++)
             {
@@ -217,27 +245,24 @@ public class Account
 
             }
 
-            MatchType matchType = MatchType.values()[matches.size()];
+        }
 
-            switch (matchType)
-            {
-            case NONE:
-                this.accountType = AccountType.ERR;
-                break;
+        return matches;
 
-            case ONE:
-                this.accountType = AccountType.OK;
-                break;
+    }
 
-            default:
-                this.accountType = AccountType.AMB;
-                break;
-            }
+    private AccountType determineAccountType(MatchType matchType)
+    {
 
-            // finalize
-            finalizeAccountNumber((this.accountType == AccountType.OK) ? matches
-                    .get(0) : candidates);
-
+        switch (matchType)
+        {
+        case NONE:
+            return AccountType.ERR;
+        case ONE:
+            return AccountType.OK;
+        case MANY:
+        default:
+            return AccountType.AMB;
         }
 
     }
@@ -256,7 +281,8 @@ public class Account
         case ERR:
         case AMB:
         default:
-            s += Account.DELIMITER += this.accountType.toString();
+            s += Account.DELIMITER;
+            s += this.accountType.toString();
             break;
         }
 
