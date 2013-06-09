@@ -12,22 +12,49 @@ public class ApplicationTest
     @Test
     public void testApplication()
     {
-        Boolean expected = false;
-        Boolean actual = false;
         Application app = null;
+
+        app = new Application("testdata.dat");
+        
+
+        assertNotNull(app);
+    }
+
+    @Test
+    public void testApplicationCallWithNoArgs()
+    {
+        boolean expected = false;
+        boolean actual = false;
+
         try
         {
-            app = new Application("testdata.dat");
+            Application.main(new String[] { null });
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            actual = true;
+        }
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testApplicationCallWithArgs()
+    {
+        boolean expected = false;
+        boolean actual = false;
+
+        try
+        {
+            Application.main(new String[] { "testdata.dat" });
         }
         catch (Exception e)
         {
             actual = true;
         }
-        
-        assertEquals(expected, actual);
-        assertNotNull(app);
-    }
 
-    
+        assertEquals(expected, actual);
+    }
     
 }

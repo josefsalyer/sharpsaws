@@ -39,6 +39,34 @@ public class ReportTest
 
         assertEquals(expected, actual);
         assertNotNull(report);
+        
+    }
+    
+    @Test
+    public void testAccountNumbers() throws IOException
+    {
+        Report report = new Report(goodData);
+        assertNotNull(report.getAccountNumbers());
+    }
+    
+    @Test
+    public void testPrint() throws IOException
+    {
+        Report report = new Report(goodData);
+        boolean expected = false;
+        boolean actual = false;
+
+        try
+        {
+            report.print();
+        }
+        catch (Exception e)
+        {
+            actual = true;
+        }
+
+        assertEquals(expected, actual);
+
     }
 
     @Test
@@ -66,6 +94,5 @@ public class ReportTest
         assertEquals(expected, actual);
         assertNull(report);
     }
-
 
 }

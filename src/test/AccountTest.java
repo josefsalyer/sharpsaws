@@ -1,5 +1,6 @@
 package test;
 
+
 import static org.junit.Assert.assertTrue;
 import me.salyer.Monkey.Models.Account;
 
@@ -12,9 +13,9 @@ public class AccountTest
 	public String bottom;
 
 	
-	@Test
+    @Test
     public void testInvalidAccount()
-	{
+    {
         topham = "    _  _     _  _  _  _  _ ";
         middle = "  | _| _||_||_ |_   ||_||_|";
         bottom = "  ||_  _|  | _||_|  ||_||_|";
@@ -23,7 +24,7 @@ public class AccountTest
         String expected = "123456788    ERR";
         assertTrue(expected.equals(account.getAccountNumber()));
 
-	}
+    }
 
     @Test
     public void testValidAccount()
@@ -42,18 +43,39 @@ public class AccountTest
     }
 
     @Test
-    public void testWeirdoAccount()
+    public void testSingleAmbiguousAccount()
     {
 
-        topham = " _ __  _  _     _  _  _  _ ";
+        topham = " _  _  _  _  _  _  _  _  _ ";
         middle = " _||_||_ |_||_| _||_||_ |_ ";
         bottom = " _|  | _||_||_||_ |_||_| _|";
 
-        String expected = "3?58?2865    ILL";
+        String expected = "345882865";
 
         Account account = new Account(topham, middle, bottom);
 
         assertTrue(expected.equals(account.getAccountNumber()));
+
     }
 
+    // @Test
+    // public void testForAmbTag()
+    // {
+    //
+    //
+    // }
+
+    // @Test
+    // public void testForBestGuess()
+    // {
+    // topham = "    _  _  _  _  _  _     _ ";
+    // middle = "|_||_|| || ||_   |  |  | _ ";
+    // bottom = "  | _||_||_||_|  |  |  | _|";
+    //
+    // Account account = new Account(topham, middle, bottom);
+    //
+    //
+    //
+    // }
+        
 }

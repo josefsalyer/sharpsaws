@@ -2,10 +2,12 @@
  * 
  */
 package test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import me.salyer.Monkey.Models.Digit;
 
 import org.junit.Test;
@@ -176,7 +178,9 @@ public class DigitTest {
                 Integer.toString(expectedInt)));
 
     }
-	
+
+    // Ambivalent characters
+
     @Test
     public void testForPhoney()
     {
@@ -191,6 +195,90 @@ public class DigitTest {
         assertEquals(digit.getNumber(), expectedInt);
         assertTrue(expected.equals(digit.getNumberAsString()));
 
+    }
+
+    // this is mostly for my own edification
+    @Test
+    public void testKnownDistanceBetweenSomeSimilarNumbers()
+    {
+        // 0,8
+        assertEquals(1, Digit.computeLevenshteinDistance(
+                Digit.ZERO.getString(), Digit.EIGHT.getString()));
+
+        // 9,8
+        assertEquals(1, Digit.computeLevenshteinDistance(
+                Digit.NINE.getString(), Digit.EIGHT.getString()));
+
+        // 1,7
+        assertEquals(1, Digit.computeLevenshteinDistance(Digit.ONE.getString(),
+                Digit.SEVEN.getString()));
+        // 3,9
+        assertEquals(1, Digit.computeLevenshteinDistance(
+                Digit.THREE.getString(), Digit.NINE.getString()));
+
+        // 5,6
+        assertEquals(1, Digit.computeLevenshteinDistance(
+                Digit.FIVE.getString(), Digit.SIX.getString()));
+
+        // 4,9
+        assertEquals(2, Digit.computeLevenshteinDistance(
+                Digit.FOUR.getString(), Digit.NINE.getString()));
+
+        // 0,9
+        assertEquals(2, Digit.computeLevenshteinDistance(
+                Digit.ZERO.getString(), Digit.NINE.getString()));
+
+    }
+
+    @Test
+    public void testGuessForString()
+    {
+
+
+        Digit digit = Digit.ZERO;
+
+        List<Digit> guesses = digit.guesses();
+
+        assertNotNull(guesses);
+        
+        int expected = 4;
+        int actual = guesses.size();
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void testGuessForAmbiguous()
+    {
+        String amb = "__ "+                           
+                     "|_|"+
+                     " _|"
+                     ;
+        Digit digit = Digit.getDigit(amb);
+
+        int expected = 4;
+        int actual = digit.guesses().size();
+        
+        assertEquals(expected, actual);
+        
+    }
+    
+    @Test
+    public void testGuessForAnotherAmbiguous()
+    {
+        String amb = " _ "+                           
+                     "|_|"+
+                     "  |"
+                     ;
+
+        Digit digit = Digit.getDigit(amb);
+
+        int expected = 6;
+        int actual = digit.guesses().size();
+        
+        assertEquals(expected, actual);
+        
     }
 	
 }

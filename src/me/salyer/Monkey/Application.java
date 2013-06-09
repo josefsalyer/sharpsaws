@@ -15,7 +15,7 @@ public class Application {
     
     public static void main(String[] args) 
     {
-        if ( args.length == 1 )
+        if ( args.length == 1 && args[0] != null && args[0].length() > 0 )
     	{
             Report report = null;
             try
@@ -45,7 +45,7 @@ public class Application {
 
 	}
 
-    private static void handleException(Exception e)
+    public static void handleException(Exception e)
     {
         System.out.print("An error occurred while running: "
                 + e.getLocalizedMessage());
