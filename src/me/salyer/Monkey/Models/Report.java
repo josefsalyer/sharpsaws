@@ -20,7 +20,7 @@ public class Report
         return report;
     }
 
-    public Report(String fileName) throws IOException
+    public Report(String fileName) throws IOException, FileNotFoundException
     {
         this.report = "";
         open(fileName);
@@ -31,7 +31,7 @@ public class Report
         System.out.print(report);
     }
 
-    private void open(String fileName) throws IOException
+    private void open(String fileName) throws IOException, FileNotFoundException
     {
         FileInputStream fStream = fileStream(fileName);
 

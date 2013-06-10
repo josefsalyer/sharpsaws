@@ -10,7 +10,7 @@ import me.salyer.Monkey.Models.Report;
 
 public class Application {
     
-    public static void main(String[] args) 
+    public static void main(String[] args) throws IOException
     {
         if ( args.length == 1 && args[0] != null && args[0].length() > 0 )
     	{
@@ -20,10 +20,6 @@ public class Application {
                 report = new Report(args[0]);
             }
             catch (FileNotFoundException e)
-            {
-                Application.handleException(e);
-            }
-            catch (IOException e)
             {
                 Application.handleException(e);
             }
@@ -47,7 +43,7 @@ public class Application {
         e.printStackTrace();
     }
 
-    public Application(String fileName)
+    public Application(String fileName) throws IOException
     {
         Application.main(new String[] { fileName });
     }

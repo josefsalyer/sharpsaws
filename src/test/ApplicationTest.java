@@ -2,6 +2,9 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+
 import me.salyer.Monkey.Application;
 
 import org.junit.Test;
@@ -10,7 +13,7 @@ public class ApplicationTest
 {
 
     @Test
-    public void testApplication()
+    public void testApplication() throws IOException
     {
         Application app = null;
 
@@ -32,7 +35,6 @@ public class ApplicationTest
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             actual = true;
         }
 
@@ -74,5 +76,25 @@ public class ApplicationTest
 
         assertEquals(expected, actual);
     }
+    
+    
+    @Test
+    public void testApplicationCallWithUnreadableFile()
+    {
+        boolean expected = false;
+        boolean actual = false;
+
+        try
+        {
+            Application.main(new String[] { "unreadable.dat" });
+        }
+        catch (Exception e)
+        {
+            actual = true;
+        }
+
+        assertEquals(expected, actual);
+    }
+
 
 }
